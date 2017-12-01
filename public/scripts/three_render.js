@@ -8,39 +8,40 @@ function loadHexSphere() {
     .then((result) => result.json())
     .then((json) => {
       let geometry = new THREE.Geometry();
-
+      const S = 0.01;
       for (let point of json.points) {
         geometry.vertices.push(new THREE.Vector3(
           parseFloat(point.x),
           parseFloat(point.y),
           parseFloat(point.z)
-        ).multiplyScalar(0.01));
+        ).multiplyScalar(S));
       }
-      let index = 0;
-      for (let face of json.faces){
-        let midPoint = new THREE.Vector3(0, 0, 0);
-        for (let point of face.slice(1)) {
-          midPoint.add(geometry.vertices[point]);
+
+      for (let face of json.faces) {
+        if (face.length === 4) {
+          geometry.faces.push(new THREE.Face3(face[0], face[1], face[2]));
+          geometry.faces.push(new THREE.Face3(face[1], face[2], face[3]));
+        } else {
+          let midPoint = new THREE.Vector3(0, 0, 0);
+          for (let point of face.slice(1)) {
+            midPoint.add(geometry.vertices[point]);
+          }
+          midPoint.multiplyScalar(1 / (face.length - 1));
+
+          geometry.vertices.push(midPoint);
+          let midPointIndex = geometry.vertices.length - 1;
+
+          // for now just triangulate to the first corner
+          let lastPoint = face[0];
+
+
+          for (let point of face) {
+            if (point === lastPoint) continue;
+
+            geometry.faces.push(new THREE.Face3(midPointIndex, point, lastPoint));
+            lastPoint = point;
+          }
         }
-        midPoint.multiplyScalar(1/(face.length - 1));
-
-        geometry.vertices.push(midPoint);
-        let midPointIndex = geometry.vertices.length - 1;
-
-        // for now just triangulate to the first corner
-        let lastPoint = face[0];
-
-
-        for (let point of face) {
-          if (point === lastPoint) continue;
-          let facePoint = geometry.vertices[point];
-          let lastFacePoint = geometry.vertices[lastPoint];
-          let dist1 = facePoint.distanceTo(lastFacePoint);
-          if (dist1 > 1) console.log(index, 'problem with face: ',face, 'wierd dist1: ', dist1, 'between', lastPoint, point);
-          geometry.faces.push(new THREE.Face3(midPointIndex, point, lastPoint));
-          lastPoint = point;
-        }
-        ++index;
       }
       return geometry;
     });
@@ -117,7 +118,7 @@ function init() {
       var material = new THREE.MeshPhongMaterial({
         ambient: 0x808080,
         wireframe: true,
-        flatShading: true,
+        flatShading: false,
         color: new THREE.Color(0.5, 1, 0.5)
       });
       let mesh2 = new THREE.Mesh(hexGeo, material);
@@ -152,8 +153,8 @@ function render() {
   // animation of all objects
   scene.traverse(function (object3d, i) {
     if (object3d instanceof THREE.Mesh === false) return
-    object3d.rotation.y = PIseconds * 0.0003 * (i % 2 ? 1 : -1);
-    object3d.rotation.x = PIseconds * 0.0002 * (i % 2 ? 1 : -1);
+    object3d.rotation.y = PIseconds * 0.00003 * (i % 2 ? 1 : -1);
+    object3d.rotation.x = PIseconds * 0.00002 * (i % 2 ? 1 : -1);
   })
   // animate DirectionalLight
   scene.traverse(function (object3d, idx) {
