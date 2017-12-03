@@ -11,6 +11,6 @@ module.exports.home = function *home(ctx) {
 };
 
 module.exports.sphere = function *sphere(ctx) {
-  let hw = new Hexworld(100, 2);
-  this.body = hw.sphere_json(4);
+  let hw = new Hexworld(100, 1, 6);
+  this.body = hw.sphere_json().map((g)=> g.toJSON());
 };

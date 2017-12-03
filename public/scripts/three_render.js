@@ -4,45 +4,13 @@ var camera, cameraControls;
 if (!init()) animate();
 
 function loadHexSphere() {
+  var p = new THREE.JSONLoader();
+  
   return fetch('/hw/sphere')
     .then((result) => result.json())
     .then((json) => {
-      let geometry = new THREE.Geometry();
-      const S = 0.01;
-      for (let point of json.points) {
-        geometry.vertices.push(new THREE.Vector3(
-          parseFloat(point.x),
-          parseFloat(point.y),
-          parseFloat(point.z)
-        ).multiplyScalar(S));
-      }
-
-      for (let face of json.faces) {
-        if (face.length === 4) {
-          geometry.faces.push(new THREE.Face3(face[0], face[1], face[2]));
-          geometry.faces.push(new THREE.Face3(face[1], face[2], face[3]));
-        } else {
-          let midPoint = new THREE.Vector3(0, 0, 0);
-          for (let point of face.slice(1)) {
-            midPoint.add(geometry.vertices[point]);
-          }
-          midPoint.multiplyScalar(1 / (face.length - 1));
-
-          geometry.vertices.push(midPoint);
-          let midPointIndex = geometry.vertices.length - 1;
-
-          // for now just triangulate to the first corner
-          let lastPoint = face[0];
-
-
-          for (let point of face) {
-            if (point === lastPoint) continue;
-
-            geometry.faces.push(new THREE.Face3(midPointIndex, point, lastPoint));
-            lastPoint = point;
-          }
-        }
-      }
+      let geometry = json.map(function(geo) { return p.parse(geo.data).geometry;}).slice(0, 2)
+      geometry[0].faces.splice(1, geometry[0].faces.length);
       return geometry;
     });
 }
@@ -114,16 +82,19 @@ function init() {
   // scene.add(mesh);
 
   loadHexSphere()
-    .then((hexGeo) => {
+    .then((geometryList) => {
       var material = new THREE.MeshPhongMaterial({
         ambient: 0x808080,
         wireframe: true,
         flatShading: false,
         color: new THREE.Color(0.5, 1, 0.5)
       });
+      geometryList.forEach(function (hexGeo){
       let mesh2 = new THREE.Mesh(hexGeo, material);
+      mesh2.scale.multiplyScalar(0.01);
       scene.add(mesh2);
-      console.log('have new mesh');
+      });
+      console.log('meshes added');
     });
 }
 
