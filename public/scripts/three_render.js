@@ -9,8 +9,7 @@ function loadHexSphere() {
   return fetch('/hw/sphere')
     .then((result) => result.json())
     .then((json) => {
-      let geometry = json.map(function(geo) { return p.parse(geo.data).geometry;}).slice(0, 2)
-      geometry[0].faces.splice(1, geometry[0].faces.length);
+      let geometry = json.map(function(geo) { return p.parse(geo.data).geometry;})
       return geometry;
     });
 }
