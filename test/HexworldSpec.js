@@ -51,7 +51,5 @@ describe('Hexworld', () => {
   describe('subdivide', () => {
     let hw = new Hexworld(100, 0, 4);
     let zone0 = hw._zones[0];
-    console.log('zone0.vertices:', zone0.parentVertices.map((p) => p.clone().round().toArray()));
-    console.log('points:', zone0.subPoints.map((p) => p.clone().round().toArray()));
   })
 });
