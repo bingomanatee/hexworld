@@ -153,5 +153,24 @@ describe('HexZone', () => {
         });
       });
     });
+
+    describe('should mark corners', () => {
+      let corners;
+
+      beforeEach(() => {
+        corners = _.filter(zone.subVertices, 'corner');
+      });
+
+      it('should have three corners', () => {
+        expect(corners.length).to.eql(3);
+      });
+
+      it('should have corners at the parentVertices', () => {
+        _.each(corners, (corner, index) => {
+          const parentVertex = zone.parentVertices[index];
+          expect(corner.distanceTo(parentVertex)).to.be.below(0.1);
+        });
+      });
+    })
   });
 });
