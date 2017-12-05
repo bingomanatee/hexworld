@@ -4,11 +4,14 @@ const Hexworld = require('./../lib/Hexworld');
 const expect = require('chai').expect;
 const _ = require('lodash');
 
-describe('Hexworld', () => {
+describe('HexWorld', () => {
   describe('.sphere_json', () => {
     describe('at resolution 0', () => {
-      let hw = new Hexworld(100, 0);
-      let data = hw.sphere_json(false)[0];
+      let hw, data;
+      beforeEach(() => {
+        hw = new Hexworld(100, 0);
+        data = hw.sphere_json(true)[0];
+      });
 
       it('should return an object', () => {
         expect(_.isObject(data)).to.be.true;
@@ -27,8 +30,11 @@ describe('Hexworld', () => {
       });
     });
     describe('at resolution 1', () => {
-      let hw = new Hexworld(100, 1);
-      let data = hw.sphere_json()[0];
+      let hw, data;
+      beforeEach(() => {
+        hw = new Hexworld(100, 1);
+        data = hw.sphere_json(true)[0];
+      })
 
       it('should return an object', () => {
         expect(_.isObject(data)).to.be.true;

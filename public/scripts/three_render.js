@@ -5,7 +5,7 @@ if (!init()) animate();
 
 function loadHexSphere() {
   var p = new THREE.JSONLoader();
-  
+
   return fetch('/hw/sphere')
     .then((result) => result.json())
     .then((json) => {
@@ -84,7 +84,7 @@ function init() {
     .then((geometryList) => {
       var material = new THREE.MeshPhongMaterial({
         ambient: 0x808080,
-        wireframe: true,
+        wireframe: false,
         flatShading: false,
         color: new THREE.Color(0.5, 1, 0.5)
       });
