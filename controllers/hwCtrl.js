@@ -18,8 +18,8 @@ module.exports.sphere = function *sphere(ctx) {
     const column = _.random(1, row);
 
     const vertex = zone.vertexAt(row, column);
-    zone.neighbors(vertex).forEach((vertex) => {
-      vertex.export = vertex.clone().multiplyScalar(1.1);
+    zone.neighbors(vertex).forEach((neighbor) => {
+      neighbor.export = neighbor.clone().multiplyScalar(1.1);
     });
     vertex.export = vertex.clone().multiplyScalar(1.05);
   });
