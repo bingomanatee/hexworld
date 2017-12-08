@@ -17,11 +17,15 @@ module.exports.sphere = function *sphere(ctx) {
     const row = _.random(1, scale - 1);
     const column = _.random(1, row);
 
-    const vertex = zone.vertexAt(row, column);
-    zone.neighbors(vertex).forEach((neighbor) => {
+    const vertex = zone.vertexAt(3, 0);
+
+    for (const neighbor of zone.neighbors(vertex)) {
       neighbor.export = neighbor.clone().multiplyScalar(1.1);
-    });
+    }
     vertex.export = vertex.clone().multiplyScalar(1.05);
+    for (const peer of zone.peers(vertex)) {
+      peer.export = peer.clone().multiplyScalar(1.05);
+    }
   });
   this.body = hw.sphere_json().map((g)=> g.toJSON());
 };

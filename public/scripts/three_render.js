@@ -1,7 +1,9 @@
 var stats, scene, renderer, composer;
 var camera, cameraControls;
 
-if (!init()) animate();
+if (!init()) {
+  animate();
+}
 
 function loadHexSphere() {
   var p = new THREE.JSONLoader();
@@ -9,7 +11,19 @@ function loadHexSphere() {
   return fetch('/hw/sphere')
     .then((result) => result.json())
     .then((json) => {
-      let geometry = json.map(function(geo) { return p.parse(geo.data).geometry;})
+      let geometry = json.map(function (geo) {
+        return p.parse(geo.data).geometry;
+      });
+      for (const geo of geometry)
+        for (const face of geo.faces) {
+          let color = new THREE.Color(Math.random(), Math.random(), Math.random());
+          face.vertexColors.push(color);
+          color = new THREE.Color(Math.random(), Math.random(), Math.random());
+          face.vertexColors.push(color);
+          color = new THREE.Color(Math.random(), Math.random(), Math.random());
+          face.vertexColors.push(color);
+          debugger;
+        }
       return geometry;
     });
 }
@@ -76,7 +90,7 @@ function init() {
   scene.add(light);
 
   var geometry = new THREE.TorusGeometry(1, 0.42, 16, 16);
-  var material = new THREE.MeshPhongMaterial({ambient: 0x808080, color: Math.random() * 0xffffff});
+  var material = new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true, vertexColors: THREE.VertexColors});
   var mesh = new THREE.Mesh(geometry, material);
   // scene.add(mesh);
 
@@ -88,10 +102,10 @@ function init() {
         flatShading: false,
         color: new THREE.Color(0.5, 1, 0.5)
       });
-      geometryList.forEach(function (hexGeo){
-      let mesh2 = new THREE.Mesh(hexGeo, material);
-      mesh2.scale.multiplyScalar(0.01);
-      scene.add(mesh2);
+      geometryList.forEach(function (hexGeo) {
+        let mesh2 = new THREE.Mesh(hexGeo, material);
+        mesh2.scale.multiplyScalar(0.01);
+        scene.add(mesh2);
       });
       console.log('meshes added');
     });
@@ -122,19 +136,25 @@ function render() {
 
   // animation of all objects
   scene.traverse(function (object3d, i) {
-    if (object3d instanceof THREE.Mesh === false) return
+    if (object3d instanceof THREE.Mesh === false) {
+      return
+    }
     object3d.rotation.y = PIseconds * 0.00003 * (i % 2 ? 1 : -1);
     object3d.rotation.x = PIseconds * 0.00002 * (i % 2 ? 1 : -1);
   })
   // animate DirectionalLight
   scene.traverse(function (object3d, idx) {
-    if (object3d instanceof THREE.DirectionalLight === false) return
+    if (object3d instanceof THREE.DirectionalLight === false) {
+      return
+    }
     var ang = 0.0005 * PIseconds * (idx % 2 ? 1 : -1);
     object3d.position.set(Math.cos(ang), Math.sin(ang), Math.cos(ang * 2)).normalize();
   })
   // animate PointLights
   scene.traverse(function (object3d, idx) {
-    if (object3d instanceof THREE.PointLight === false) return
+    if (object3d instanceof THREE.PointLight === false) {
+      return
+    }
     var angle = 0.0005 * PIseconds * (idx % 2 ? 1 : -1) + idx * Math.PI / 3;
     object3d.position.set(Math.cos(angle) * 3, Math.sin(angle * 3) * 2, Math.cos(angle * 2)).normalize().multiplyScalar(2);
   })

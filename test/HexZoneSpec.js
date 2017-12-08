@@ -127,7 +127,7 @@ describe('HexZone', () => {
 
     it('should find the mirror zone', () => {
       const mirrorZone = hexWorld.edgePointMirrorZone(edge[3]);
-        expect( mirrorZone.index).to.eql(1);
+      expect(mirrorZone.index).to.eql(1);
     });
   });
 
@@ -218,6 +218,43 @@ describe('HexZone', () => {
           expect(corner.distanceTo(parentVertex)).to.be.below(0.1);
         });
       });
+    })
+  });
+
+  describe('.peers', () => {
+    let zone;
+
+    beforeEach(() => {
+      const hexWorld = new HexWorld(100, 1, 6);
+      zone = hexWorld.zone(0);
+    });
+
+    it('should not get any peers in the middle', () => {
+      const vertex = zone.vertexAt(2, 1);
+      expect(zone.peers(vertex)).to.eql([])
+    });
+
+    it('should get one peer at the edge', (done) => {
+      const vertex = zone.vertexAt(3, 0);
+      try {
+        expect().to.eql([]);
+      } catch (err) {
+        console.log('error: ', err.message);
+      }
+      done();
+    })
+  });
+  describe('.corners', () => {
+    let zone;
+
+    beforeEach(() => {
+      const hexWorld = new HexWorld(100, 1, 6);
+      zone = hexWorld.zone(0);
+    });
+
+    it('should return three corners', () => {
+      const corners = zone.corners;
+      expect(corners.length).to.eql(3);
     })
   });
 });
