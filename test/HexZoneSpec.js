@@ -234,15 +234,14 @@ describe('HexZone', () => {
       expect(zone.peers(vertex)).to.eql([])
     });
 
-    it('should get one peer at the edge', (done) => {
+    it('should get one peer at the edge', () => {
       const vertex = zone.vertexAt(3, 0);
-      try {
-        expect().to.eql([]);
-      } catch (err) {
-        console.log('error: ', err.message);
-      }
-      done();
-    })
+      let peers = zone.peers(vertex);
+      expect(peers.length).to.eql(1);
+      expect(peers[0].rowIndex).to.eql(3);
+      expect(peers[0].colIndex).to.eql(3);
+      expect(peers[0].zone.index).to.eql(1);
+    });
   });
   describe('.corners', () => {
     let zone;
