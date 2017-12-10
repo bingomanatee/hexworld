@@ -54,7 +54,7 @@ describe('HexWorld', () => {
     });
   });
 
-  describe('subdivide', () => {
+  describe('divide', () => {
     let hw = new Hexworld(100, 0, 4);
     let zone0 = hw._zones[0];
   })

@@ -32,7 +32,7 @@ describe('HexZone', () => {
       });
     });
   });
-  describe('.subdivide', () => {
+  describe('.divide', () => {
     let zone;
     let subPoint2ArrayAsArrayOfPoints;
     let subFacesAsArrayOfIndexes;
@@ -43,7 +43,7 @@ describe('HexZone', () => {
       const right = new THREE.Vector3(2, 7, 4);
 
       zone = new HexZone([top, left, right]);
-      zone.subdivide(4);
+      zone.divide(4);
       subPoint2ArrayAsArrayOfPoints = zone.vertexes2dArray;
       _.each(subPoint2ArrayAsArrayOfPoints, (row, index) => {
         subPoint2ArrayAsArrayOfPoints[index] = row.map((v) => v.toArray());
