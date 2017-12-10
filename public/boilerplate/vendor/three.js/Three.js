@@ -13851,7 +13851,7 @@ THREE.SceneLoader.prototype = {
 
 			} else if ( geoJSON.type === "icosahedron" ) {
 
-				geometry = new THREE.IcosahedronGeometry( geoJSON.radius, geoJSON.subdivisions );
+				geometry = new THREE.IcosahedronGeometry( geoJSON.radius, geoJSON.divisions );
 				geometry.name = geoID;
 				result.geometries[ geoID ] = geometry;
 
