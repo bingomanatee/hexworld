@@ -8,11 +8,6 @@ const corner = zone.corners[1];
 
 const neighbors = zone.neighbors(corner);
 
-console.log('corner: ', zone.vertexToString(corner));
-
-console.log(require('util').inspect(corner, {depth: 1}));
-console.log('neighbors: ');
-
 for (let n of neighbors) {
   console.log('neighbor: ', zone.vertexToString(n));
 }

@@ -205,7 +205,7 @@ describe('HexZone', () => {
       let corners;
 
       beforeEach(() => {
-        corners = _.filter(zone.subVertices, 'corner');
+        corners = _.filter(zone.vertices, 'corner');
       });
 
       it('should have three corners', () => {
