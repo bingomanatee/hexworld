@@ -137,9 +137,6 @@ describe('HexZone', () => {
     beforeEach(() => {
       const hexWorld = new HexWorld(100, 1, 4);
       zone = hexWorld.zone(0);
-      // console.log('base:', zone.hexWorld._base.toJSON());
-      // console.log('zone corners:', zone.parentVertices.map(vertString));
-
     });
 
     describe('should get the edges of the zone', () => {
