@@ -36,15 +36,29 @@ describe('IsoTriangle', () => {
     expect(triangle.colPoint.z).to.eql(10);
   });
 
-  it('.divide', () => {
-    triangle.divide(2);
-    const points = triangle.points.map((point) => point.toArray());
-    expect(points).to.eql([[0, 0, 10],
-      [10, 0, 0],
-      [10, 0, 10],
-      [5, 0, 5],
-      [5, 0, 10],
-      [10, 0, 5]]);
-  });
+  describe('divide', () => {
+    beforeEach(() => {
+      triangle.divide(2);
+    });
+
+    it('should have the right points', () => {
+      const points = triangle.points.map((point) => point.toArray());
+      expect(points).to.eql([[0, 0, 10],
+        [10, 0, 0],
+        [10, 0, 10],
+        [5, 0, 5],
+        [5, 0, 10],
+        [10, 0, 5]]);
+    });
+
+    it('should have the right shapes', () => {
+      const ppi = triangle.shapes.map((s) => s.parentPointIndexes);
+      expect(ppi).to.eql([
+        [0, 3, 4],
+        [3, 1, 5],
+        [3, 5, 4],
+        [4, 5, 2]])
+    });
+  })
 
 });
