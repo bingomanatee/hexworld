@@ -36,4 +36,15 @@ describe('IsoTriangle', () => {
     expect(triangle.colPoint.z).to.eql(10);
   });
 
+  it('.divide', () => {
+    triangle.divide(2);
+    const points = triangle.points.map((point) => point.toArray());
+    expect(points).to.eql([[0, 0, 10],
+      [10, 0, 0],
+      [10, 0, 10],
+      [5, 0, 5],
+      [5, 0, 10],
+      [10, 0, 5]]);
+  });
+
 });
