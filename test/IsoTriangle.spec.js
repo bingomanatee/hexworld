@@ -3,6 +3,7 @@
 const expect = require('chai').expect;
 const _ = require('lodash');
 const THREE = require('three');
+const IsoTriangleEdge = require('./../lib/IsoTriangle/IsoTriangleEdge');
 
 const IsoTriangle = require('./../lib/IsoTriangle');
 const Shape = require('./../lib/Shape');
@@ -59,6 +60,43 @@ describe('IsoTriangle', () => {
         [3, 5, 4],
         [4, 5, 2]])
     });
-  })
+  });
 
+  describe('edges', () => {
+    beforeEach(() => {
+      triangle.divide(4);
+    });
+
+    it('should produce the pointString', () => {
+      console.log('pointString: -----------');
+      console.log(triangle.divider.pointsString);
+    });
+
+    it('root-row', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROOT_ROW).pointIndexes)
+        .to.eql([0, 3, 5, 8, 1]);
+    });
+
+    it('root-col', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROOT_COL).pointIndexes)
+        .to.eql([0, 4, 7, 11, 2]);
+    });
+
+    it('roow-col', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROW_COL).pointIndexes)
+        .to.eql([1, 12, 13, 14, 2]);
+    });
+
+    it('edge identity root-row', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROOT_ROW).edgeIdentity).to.eql(IsoTriangleEdge.EDGE_ROOT_ROW);
+    });
+
+    it('edge identity root-col', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROOT_COL).edgeIdentity).to.eql(IsoTriangleEdge.EDGE_ROOT_COL);
+    });
+
+    it('edge identity row-col', () => {
+      expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROW_COL).edgeIdentity).to.eql(IsoTriangleEdge.EDGE_ROW_COL);
+    });
+  });
 });
