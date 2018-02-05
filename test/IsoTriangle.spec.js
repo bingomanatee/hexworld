@@ -62,6 +62,26 @@ describe('IsoTriangle', () => {
     });
   });
 
+  describe('.localNeighbors', () => {
+    beforeEach(() => {
+      triangle.divide(4);
+    });
+
+    it('should get the local neighbors of a corner', () => {
+      expect(triangle.divider.localNeighborIndexes(0, 0)).to.eql([3, 4]);
+      expect(triangle.divider.localNeighborIndexes(4, 4)).to.eql([14, 11]);
+      expect(triangle.divider.localNeighborIndexes(4, 0)).to.eql([12, 8]);
+    });
+
+    it('should get the local neighbors of a central point', () => {
+      expect(triangle.divider.localNeighborIndexes(2, 1)).to.eql([9, 10, 7, 5, 3, 4]);
+    });
+
+    it('should get the local neighbors of an edge point', () => {
+      expect(triangle.divider.localNeighborIndexes(2, 2)).to.eql([10, 11, 6, 4]);
+    });
+  });
+
   describe('edges', () => {
     beforeEach(() => {
       triangle.divide(4);
@@ -97,6 +117,44 @@ describe('IsoTriangle', () => {
 
     it('edge identity row-col', () => {
       expect(triangle.divider.edges.get(IsoTriangleEdge.EDGE_ROW_COL).edgeIdentity).to.eql(IsoTriangleEdge.EDGE_ROW_COL);
+    });
+
+    describe('.pointEdges', () => {
+      describe('(at corners)', () => {
+        it('should find two edges at top corner', () => {
+          expect(triangle.divider.rcEdges(0, 0).map((edge) => edge.edgeIdentity)).to.eql([
+            "EDGE_ROOT_ROW",
+            "EDGE_ROOT_COL"
+          ]);
+        });
+
+        it('should find two edges at row corner', () => {
+          expect(triangle.divider.rcEdges(4, 0).map((edge) => edge.edgeIdentity)).to.eql([
+            "EDGE_ROOT_ROW",
+            "EDGE_ROW_COL"
+          ]);
+        });
+
+        it('should find two edges at col corner', () => {
+          expect(triangle.divider.rcEdges(4, 4).map((edge) => edge.edgeIdentity)).to.eql([
+            "EDGE_ROOT_COL",
+            "EDGE_ROW_COL"
+          ]);
+        });
+      });
+
+      describe('(at edges)', () => {
+        it('should find edge at row', () => {
+          expect(triangle.divider.rcEdges(1, 0).map((edge) => edge.edgeIdentity)).to.eql([
+            "EDGE_ROOT_ROW"
+          ]);
+        });
+        it('should find edge at col', () => {
+          expect(triangle.divider.rcEdges(1, 1).map((edge) => edge.edgeIdentity)).to.eql([
+            "EDGE_ROOT_COL"
+          ]);
+        });
+      });
     });
   });
 });
