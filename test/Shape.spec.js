@@ -47,7 +47,7 @@ describe('Shape', () => {
       expect(firstPoint.z).to.equal(5);
     });
 
-    it('should put a point without an index', () => {
+    it('should put a point with an index', () => {
       shape.putPoint(3, 4, 5, 2);
       let pointAt2 = shape.getPoint(2);
       expect(pointAt2.x).to.equal(3);
